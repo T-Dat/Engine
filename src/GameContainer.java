@@ -4,9 +4,9 @@ public class GameContainer implements Runnable {
 
     private final double UPDATE_CAP = 1.0 / 60.0;
     private boolean running = false;
-    private Thread thread;
+    private Thread thread = new Thread(this);
 
-    private int width = 320, height = 240;
+    private int width, height;
     private float scale = 3;
 
     private String title = "Engine v1.0";
@@ -18,13 +18,14 @@ public class GameContainer implements Runnable {
 
     public GameContainer(AbstractGame game) {
         this.game = game;
+        width = AbstractGame.TS * (game.getTileW());
+        height = AbstractGame.TS * (game.getTileH());
     }
 
     public void start() {
         window = new Window(this);
         renderer = new Renderer(this);
         input = new Input(this);
-        thread = new Thread(this);
         thread.run();
     }
 
@@ -34,11 +35,11 @@ public class GameContainer implements Runnable {
     public void run() {
         running = true;
 
-        boolean render = false;
+        boolean render;
 
-        double firstTime = 0;
+        double firstTime;
         double lastTime = System.nanoTime() / 1000000000.0;
-        double passedTime = 0;
+        double passedTime;
         double unprocessedTime = 0;
 
         double frameTime = 0;
@@ -89,24 +90,7 @@ public class GameContainer implements Runnable {
         dispose();
     }
 
-    public void dispose() {
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public void setScale(float scale) {
-        this.scale = scale;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    private void dispose() {}
 
     public int getWidth() {
         return width;
@@ -130,5 +114,9 @@ public class GameContainer implements Runnable {
 
     public Input getInput() {
         return input;
+    }
+
+    public Renderer getRenderer() {
+        return renderer;
     }
 }

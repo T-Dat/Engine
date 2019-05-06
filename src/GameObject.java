@@ -3,17 +3,8 @@ public abstract class GameObject {
     protected float posX, posY;
     protected int width, height;
 
-
-
-    protected boolean dead = false;
-
-
-    public abstract  void update(GameContainer gc, GameManager2 gm, float dt);
+    public abstract  void update(GameContainer gc, GameManager gm, float dt);
     public abstract void render(GameContainer gc, Renderer r);
-
-    public boolean isDead() {
-        return dead;
-    }
 
     public String getTag() {
         return tag;

@@ -21,7 +21,7 @@ public class Renderer {
         }
     }
 
-    public void setPixel(int x, int y, int value) {
+    private void setPixel(int x, int y, int value) {
         if (x < 0 || y < 0 || x >= pW || y >= pH || ((value >> 24) & 0xff) == 0) {
             return;
         }
