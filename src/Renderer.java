@@ -1,27 +1,41 @@
-import gfx.Image;
-import gfx.ImageTile;
-
 public class Renderer {
-    Window window;
-    World world;
+    private Window window;
+    private World world;
     private int pW, pH;
     private Font font = Font.STANDARD;
 
     public Renderer(Window window, World world) {
-        pW = window.getpW();
-        pH = window.getpH();
+        pW = window.getPW();
+        pH = window.getPH();
         this.window = window;
         this.world = world;
     }
 
     public void render() {
+        renderTiles();
         renderPlayer(world.getFather());
         renderPlayer(world.getKidnapper());
+        if (world.getPlayerCollision()) {
+            drawText("Finished!!!", pW / 2, pH / 2, 0xff0000ff);
+        }
     }
 
     public void renderPlayer(Player player) {
         int color = player.isKidnapper() ? 0xffff0000 : 0xff00ff00;
-        fillRect((int) player.getPosX(), (int) player.getPosY(), player.getWidth() - 1, player.getHeight() - 1, color);
+        drawRect((int) player.getPosX(), (int) player.getPosY(), player.getWidth() - 1, player.getHeight() - 1, color);
+    }
+
+    public void renderTiles() {
+        for (int y = 0; y < world.getTileH(); y++) {
+            for (int x = 0; x < world.getTileW(); x++) {
+                if (world.getCollision(x,y)) {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xff0f0f0f);
+                } else {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xfff9f9f9);
+                }
+            }
+
+        }
     }
 
     public void clear() {
@@ -32,7 +46,7 @@ public class Renderer {
         }
     }
 
-    public void drawText(String text, int offX, int offY, int color) {
+    public void drawText(String text, int posX, int posY, int color) {
         text = text.toUpperCase();
         int offset = 0;
         for (int i = 0; i < text.length(); i++) {
@@ -41,7 +55,7 @@ public class Renderer {
             for (int y = 0; y < font.getFontImage().getH(); y++) {
                 for (int x = 0; x < font.getWidths()[unicode]; x++) {
                     if (font.getFontImage().getP()[x + font.getOffsets()[unicode] + y * font.getFontImage().getW()] == 0xffffffff) {
-                        window.setPixel(x + offX + offset, y + offY, color);
+                        window.setPixel(x + posX + offset, y + posY, color);
                     }
                 }
             }
@@ -49,86 +63,25 @@ public class Renderer {
         }
     }
 
-    public void drawImage(Image image, int offX, int offY) {
-
-        if (offX < -image.getW()) return;
-        if (offY < -image.getH()) return;
-        if (offX >= pW) return;
-        if (offY >= pH) return;
-
-        int newX = 0;
-        int newY = 0;
-        int newWidth = image.getW();
-        int newHeight = image.getH();
-
-        if (offX < 0) newX -= offX;
-        if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW - offX;
-        if (newHeight + offY >= pH) newHeight = pH - offY;
-
-
-        for (int y = newY; y < newHeight; y++) {
-            for (int x = newX; x < newWidth; x++) {
-                window.setPixel(x + offX, y + offY, image.getP()[x + y * image.getW()]);
-            }
-        }
-    }
-
-    public void drawImageTile(ImageTile image, int offX, int offY, int tileX, int tileY) {
-        if (offX < -image.getTileW()) return;
-        if (offY < -image.getTileH()) return;
-        if (offX >= pW) return;
-        if (offY >= pH) return;
-
-        int newX = 0;
-        int newY = 0;
-        int newWidth = image.getTileW();
-        int newHeight = image.getTileH();
-
-        if (offX < 0) newX -= offX;
-        if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW - offX;
-        if (newHeight + offY >= pH) newHeight = pH - offY;
-
-
-        for (int y = newY; y < newHeight; y++) {
-            for (int x = newX; x < newWidth; x++) {
-                window.setPixel(x + offX, y + offY, image.getP()[(x + tileX * image.getTileW()) + (y + tileY * image.getTileH()) * image.getW()]);
-            }
-        }
-    }
-
-    public void drawRect(int offX, int offY, int width, int height, int color) {
-        for (int y = 0; y <= width; y++) {
-            window.setPixel(offX, y + offY, color);
-            window.setPixel(offX + width, y + offY, color);
-        }
-
-        for (int x = 0; x <= width; x++) {
-            window.setPixel(x + offX, offY, color);
-            window.setPixel(x + offX, offY + height, color);
-        }
-    }
-
-    public void fillRect(int offX, int offY, int width, int height, int color) {
-        if (offX < -width) return;
-        if (offY < -height) return;
-        if (offX >= pW) return;
-        if (offY >= pH) return;
+    public void drawRect(int posX, int posY, int width, int height, int color) {
+        if (posX < -width) return;
+        if (posY < -height) return;
+        if (posX >= pW) return;
+        if (posY >= pH) return;
 
         int newX = 0;
         int newY = 0;
         int newWidth = width;
         int newHeight = height;
 
-        if (offX < 0) newX -= offX;
-        if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW - offX;
-        if (newHeight + offY >= pH) newHeight = pH - offY;
+        if (posX < 0) newX -= posX;
+        if (posY < 0) newY -= posY;
+        if (newWidth + posX >= pW) newWidth = pW - posX;
+        if (newHeight + posY >= pH) newHeight = pH - posY;
 
         for (int y = newY; y <= newHeight; y++) {
             for (int x = newX; x <= newWidth; x++) {
-                window.setPixel(x + offX, y + offY, color);
+                window.setPixel(x + posX, y + posY, color);
             }
         }
     }

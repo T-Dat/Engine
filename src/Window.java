@@ -50,11 +50,11 @@ public class Window {
         p[x + y * pW] = value;
     }
 
-    public int getpW() {
+    public int getPW() {
         return pW;
     }
 
-    public int getpH() {
+    public int getPH() {
         return pH;
     }
 

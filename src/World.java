@@ -1,6 +1,6 @@
 public class World {
     public static final int TS = 16;
-    protected int tileW, tileH;
+    private int tileW, tileH;
     private boolean[] collisions;
     private Player father;
     private Player kidnapper;
@@ -9,26 +9,11 @@ public class World {
     public World(int tileW, int tileH) {
         this.tileW = tileW;
         this.tileH = tileH;
+        //todo add tile class
         collisions = new boolean[tileW * tileH];
-        kidnapper = new Player(3, 2, true, this);
+        //todo: place players in position
+        kidnapper = new Player(1, 2, true, this);
         father = new Player(8, 6, false, this);
-    }
-
-    //TODO: move that to renderer
-    public void render(GameContainer gc, Renderer r) {
-        for (int y = 0; y < tileH; y++) {
-            for (int x = 0; x < tileW; x++) {
-                if (collisions[x + y * tileW]) {
-                    r.fillRect(x * TS, y * TS, TS, TS, 0xff0f0f0f);
-                } else {
-                    r.fillRect(x * TS, y * TS, TS, TS, 0xfff9f9f9);
-                }
-            }
-
-        }
-        if (getPlayerCollision()) {
-            gc.getRenderer().drawText("Finished!!!", gc.getWidth() / 2, gc.getHeight() / 2, 0xff0000ff);
-        }
     }
 
     public boolean getCollision(int x, int y) {
@@ -38,10 +23,12 @@ public class World {
         return collisions[x + y * tileW];
     }
 
+    //todo fix colision
     public boolean getPlayerCollision() {
-        return Math.abs(father.posX - kidnapper.posX) < 10 && Math.abs(father.posY - kidnapper.posY) < 10;
+        return Math.abs(father.getPosX() - kidnapper.getPosX()) < 10 && Math.abs(father.getPosY() - kidnapper.getPosY()) < 10;
     }
 
+    //todo use bayesian generator
     public void createLevel() {
         for (int i = 0; i < collisions.length; i++) {
             collisions[i] = false;
@@ -60,7 +47,6 @@ public class World {
             collisions[i * tileW + 19] = true;
             collisions[i * tileW] = true;
         }
-
     }
 
     public int getTileW() {
@@ -79,7 +65,4 @@ public class World {
         return kidnapper;
     }
 
-    public boolean[] getCollisions() {
-        return collisions;
-    }
 }

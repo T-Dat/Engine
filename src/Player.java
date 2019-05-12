@@ -3,7 +3,7 @@ public class Player {
     private float speed;
     private int tileX, tileY;
     private float offX, offY;
-    protected float posX, posY;
+    private float posX, posY;
     private int width, height;
     private boolean kidnapper;
     private World world;
@@ -23,7 +23,7 @@ public class Player {
         this.height = World.TS;
     }
 
-    public void moveLeft(float dt) {
+    public void moveLeft(double dt) {
         if (world.getCollision(tileX - 1, tileY) || world.getCollision(tileX - 1, tileY + (int) Math.signum((int) offY))) {
             if (offX > 0) {
                 offX -= dt * speed;
@@ -43,7 +43,7 @@ public class Player {
         posX = tileX * World.TS + offX;
     }
 
-    public void moveRight(float dt) {
+    public void moveRight(double dt) {
         if (world.getCollision(tileX + 1, tileY) || world.getCollision(tileX + 1, tileY + (int) Math.signum((int) offY))) {
             if (offX < 0) {
                 offX += dt * speed;
@@ -63,7 +63,7 @@ public class Player {
         posX = tileX * World.TS + offX;
     }
 
-    public void moveUp(float dt) {
+    public void moveUp(double dt) {
         if (world.getCollision(tileX, tileY - 1) || world.getCollision(tileX + (int) Math.signum((int) offX), tileY - 1)) {
             if (offY > 0) {
                 offY -= dt * speed;
@@ -83,7 +83,7 @@ public class Player {
         posY = tileY * World.TS + offY;
     }
 
-    public void moveDown(float dt) {
+    public void moveDown(double dt) {
         if (world.getCollision(tileX, tileY + 1) || world.getCollision(tileX + (int) Math.signum((int) offX), tileY + 1)) {
             if (offY < 0) {
                 offY += dt * speed;

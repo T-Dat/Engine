@@ -5,65 +5,51 @@ public class KeyController implements KeyListener {
 
     private final int NUM_KEYS = 256;
     private boolean[] keys = new boolean[NUM_KEYS];
-    private boolean[] keysLast = new boolean[NUM_KEYS];
     private Player player;
+    private int up = KeyEvent.VK_W;
+    private int down = KeyEvent.VK_S;
+    private int left = KeyEvent.VK_A;
+    private int right = KeyEvent.VK_D;
 
     public KeyController(Window window, Player player) {
         window.getCanvas().addKeyListener(this);
         this.player = player;
     }
 
-    public void update(float dt) {
-        for (int i = 0; i < NUM_KEYS; i++) {
-            keysLast[i] = keys[i];
+    public void setKeys(int up, int down, int left, int right) {
+        this.up = up;
+        this.down = down;
+        this.left = left;
+        this.right = right;
+    }
+
+    public void update(double dt) {
+        if (keys[right]) {
+            player.moveRight(dt);
         }
-        movePlayer(dt);
-    }
 
-    public boolean isKey(int keyCode) {
-        return keys[keyCode];
-    }
+        if (keys[left]) {
+            player.moveLeft(dt);
+        }
 
-    public boolean isKeyUp(int keyCode) {
-        return !keys[keyCode] && keysLast[keyCode];
-    }
+        if (keys[up]) {
+            player.moveUp(dt);
+        }
 
-    public boolean isKeyDown(int keyCode) {
-        return keys[keyCode] && !keysLast[keyCode];
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
+        if (keys[down]) {
+            player.moveDown(dt);
+        }
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-        keys[e.getKeyCode()] = true;
+    public void keyTyped(KeyEvent e) {}
 
-    }
+    @Override
+    public void keyPressed(KeyEvent e) { keys[e.getKeyCode()] = true; }
 
     @Override
     public void keyReleased(KeyEvent e) {
         keys[e.getKeyCode()] = false;
     }
-
-    public void movePlayer(float dt) {
-        if (isKey(KeyEvent.VK_D)) {
-            player.moveRight(dt);
-        }
-
-        if (isKey(KeyEvent.VK_A)) {
-            player.moveLeft(dt);
-        }
-
-        if (isKey(KeyEvent.VK_W)) {
-            player.moveUp(dt);
-        }
-
-        if (isKey(KeyEvent.VK_S)) {
-            player.moveDown(dt);
-        }
-    }
-
 }
 
