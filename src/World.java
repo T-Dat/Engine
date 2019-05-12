@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 
-public class World extends AbstractGame {
+public class World  {
+    public static final int TS = 16;
+    protected int tileW, tileH;
     private ArrayList<GameObject> objects = new ArrayList<>(2);
     private boolean[] collisions;
 
@@ -13,15 +15,13 @@ public class World extends AbstractGame {
         objects.add(new Player(8,6, false, false, this));
     }
 
-    @Override
     public void update(GameContainer gc, float dt) {
         for (GameObject object : objects) {
             object.update(gc, dt);
         }
     }
 
-
-    @Override
+    //TODO: move that to renderer
     public void render(GameContainer gc, Renderer r) {
         for (int y = 0; y < tileH; y++) {
             for (int x = 0; x < tileW; x++) {
@@ -52,7 +52,7 @@ public class World extends AbstractGame {
         return Math.abs(objects.get(0).posX - objects.get(1).posX) < 10 && Math.abs(objects.get(0).posY - objects.get(1).posY) < 10;
     }
 
-    private void createLevel() {
+    public void createLevel() {
         for (int i = 0; i < collisions.length; i++) {
             collisions[i] = false;
         }
@@ -73,10 +73,11 @@ public class World extends AbstractGame {
 
     }
 
-    public static void main(String[] args) {
-        World gm = new World(20, 15);
-        gm.createLevel();
-        GameContainer gc = new GameContainer(gm);
-        gc.start();
+    public int getTileW() {
+        return tileW;
+    }
+
+    public int getTileH() {
+        return tileH;
     }
 }

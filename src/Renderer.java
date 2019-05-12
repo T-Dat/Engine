@@ -1,17 +1,17 @@
 import gfx.Image;
 import gfx.ImageTile;
 
-import java.awt.image.DataBufferInt;
-
 public class Renderer {
     private int pW, pH;
     private Font font = Font.STANDARD;
     Window window;
+    World world;
 
-    public Renderer(Window window) {
+    public Renderer(Window window, World world) {
         pW = window.getpW();
         pH = window.getpH();
         this.window = window;
+        this.world = world;
     }
 
     public void  clear() {

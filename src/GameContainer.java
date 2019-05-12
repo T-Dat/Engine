@@ -1,5 +1,3 @@
-import java.awt.event.KeyEvent;
-
 public class GameContainer implements Runnable {
 
     private final double UPDATE_CAP = 1.0 / 60.0;
@@ -12,17 +10,17 @@ public class GameContainer implements Runnable {
     private Window window;
     private Renderer renderer;
     private Input input;
-    private AbstractGame game;
+    private World world;
 
-    public GameContainer(AbstractGame game) {
-        this.game = game;
-        width = AbstractGame.TS * (game.getTileW());
-        height = AbstractGame.TS * (game.getTileH());
+    public GameContainer(World world) {
+        this.world = world;
+        width = World.TS * (world.getTileW());
+        height = World.TS * (world.getTileH());
     }
 
     public void start() {
         window = new Window(this);
-        renderer = new Renderer(window);
+        renderer = new Renderer(window, world);
         input = new Input(this);
         thread.run();
     }
@@ -61,7 +59,7 @@ public class GameContainer implements Runnable {
 
                 input.update();
 
-                game.update(this, (float) UPDATE_CAP);
+                world.update(this, (float) UPDATE_CAP);
 
                 if (frameTime >= 1.0) {
                     frameTime = 0;
@@ -72,7 +70,7 @@ public class GameContainer implements Runnable {
 
             if (render) {
                 renderer.clear();
-                game.render(this, renderer);
+                world.render(this, renderer);
                 renderer.drawText("FPS: " + fps, 0, 0, 0xff00ffff);
                 window.update();
                 frames++;
@@ -113,5 +111,12 @@ public class GameContainer implements Runnable {
 
     public Renderer getRenderer() {
         return renderer;
+    }
+
+    public static void main(String[] args) {
+        World world = new World(20, 15);
+        world.createLevel();
+        GameContainer gc = new GameContainer(world);
+        gc.start();
     }
 }
