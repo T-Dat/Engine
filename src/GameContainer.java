@@ -9,8 +9,6 @@ public class GameContainer implements Runnable {
     private int width, height;
     private float scale = 3;
 
-    private String title = "Engine v1.0";
-
     private Window window;
     private Renderer renderer;
     private Input input;
@@ -24,7 +22,7 @@ public class GameContainer implements Runnable {
 
     public void start() {
         window = new Window(this);
-        renderer = new Renderer(this);
+        renderer = new Renderer(window);
         input = new Input(this);
         thread.run();
     }
@@ -62,6 +60,7 @@ public class GameContainer implements Runnable {
                 render = true;
 
                 input.update();
+
                 game.update(this, (float) UPDATE_CAP);
 
                 if (frameTime >= 1.0) {
@@ -102,10 +101,6 @@ public class GameContainer implements Runnable {
 
     public float getScale() {
         return scale;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public Window getWindow() {

@@ -1,18 +1,9 @@
 public abstract class GameObject {
-    protected String tag;
     protected float posX, posY;
     protected int width, height;
 
-    public abstract  void update(GameContainer gc, GameManager gm, float dt);
-    public abstract void render(GameContainer gc, Renderer r);
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
+    public abstract  void update(GameContainer gc, float dt);
+    public abstract void render(Renderer r);
 
     public float getPosX() {
         return posX;

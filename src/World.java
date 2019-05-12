@@ -1,22 +1,22 @@
 import java.util.ArrayList;
 
-public class GameManager extends AbstractGame {
+public class World extends AbstractGame {
     private ArrayList<GameObject> objects = new ArrayList<>(2);
     private boolean[] collisions;
 
 
-    public GameManager(int tileW, int tileH) {
+    public World(int tileW, int tileH) {
         this.tileW = tileW;
         this.tileH = tileH;
         collisions = new boolean[tileW *tileH];
-        objects.add(new Player(3,2, true, true));
-        objects.add(new Player(8,6, false, false));
+        objects.add(new Player(3,2, true, true, this));
+        objects.add(new Player(8,6, false, false, this));
     }
 
     @Override
     public void update(GameContainer gc, float dt) {
         for (GameObject object : objects) {
-            object.update(gc, this, dt);
+            object.update(gc, dt);
         }
     }
 
@@ -34,7 +34,7 @@ public class GameManager extends AbstractGame {
 
         }
         for (GameObject obj: objects) {
-            obj.render(gc, r);
+            obj.render(r);
         }
         if (getPlayerCollision()) {
             gc.getRenderer().drawText("Finished!!!", gc.getWidth()/2, gc.getHeight()/2, 0xff0000ff);
@@ -74,7 +74,7 @@ public class GameManager extends AbstractGame {
     }
 
     public static void main(String[] args) {
-        GameManager gm = new GameManager(20, 15);
+        World gm = new World(20, 15);
         gm.createLevel();
         GameContainer gc = new GameContainer(gm);
         gc.start();
