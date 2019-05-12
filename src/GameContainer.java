@@ -85,8 +85,7 @@ public class GameContainer implements Runnable {
     }
 
     public static void main(String[] args) {
-        World world = new World(20, 15);
-        world.createLevel();
+        World world = new World(10, 10);
         GameContainer gc = new GameContainer(world);
         gc.start();
     }

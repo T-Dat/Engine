@@ -15,23 +15,27 @@ public class Renderer {
         renderTiles();
         renderPlayer(world.getFather());
         renderPlayer(world.getKidnapper());
-        if (world.getPlayerCollision()) {
+        if (world.isPlayerCollision()) {
             drawText("Finished!!!", pW / 2, pH / 2, 0xff0000ff);
         }
     }
 
     public void renderPlayer(Player player) {
-        int color = player.isKidnapper() ? 0xffff0000 : 0xff00ff00;
+        int color = player.isKidnapper() ? 0xffffffff : 0xffffffff;
         drawRect((int) player.getPosX(), (int) player.getPosY(), player.getWidth() - 1, player.getHeight() - 1, color);
     }
 
     public void renderTiles() {
         for (int y = 0; y < world.getTileH(); y++) {
             for (int x = 0; x < world.getTileW(); x++) {
-                if (world.getCollision(x,y)) {
-                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xff0f0f0f);
-                } else {
-                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xfff9f9f9);
+                if (world.getTileType(x,y) == TileType.GRASS) {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xff00ff00);
+                } else if (world.getTileType(x,y) == TileType.SAND) {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xffffff00);
+                } else if (world.getTileType(x,y) == TileType.WATER) {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xff0000ff);
+                } else if (world.getTileType(x,y) == TileType.TREE) {
+                    drawRect(x * World.TS, y * World.TS, World.TS, World.TS, 0xff00f000);
                 }
             }
 

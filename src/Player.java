@@ -19,6 +19,7 @@ public class Player {
         this.offY = 0;
         this.posX = posX * World.TS;
         this.posY = posY * World.TS;
+        //todo allow for different size
         this.width = World.TS;
         this.height = World.TS;
     }
@@ -36,7 +37,7 @@ public class Player {
         } else {
             offX -= dt * speed;
         }
-        if (offX < -World.TS / 2) {
+        while (offX < -World.TS / 2) {
             tileX--;
             offX += World.TS;
         }
@@ -56,7 +57,7 @@ public class Player {
         } else {
             offX += dt * speed;
         }
-        if (offX > World.TS / 2) {
+        while (offX > World.TS / 2) {
             tileX++;
             offX -= World.TS;
         }
@@ -76,7 +77,7 @@ public class Player {
         } else {
             offY -= dt * speed;
         }
-        if (offY < -World.TS / 2) {
+        while (offY < -World.TS / 2) {
             tileY--;
             offY += World.TS;
         }
@@ -96,7 +97,7 @@ public class Player {
         } else {
             offY += dt * speed;
         }
-        if (offY > World.TS / 2) {
+        while (offY > World.TS / 2) {
             tileY++;
             offY -= World.TS;
         }
