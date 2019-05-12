@@ -11,6 +11,7 @@ public class GameContainer implements Runnable {
     private Renderer renderer;
     private Input input;
     private World world;
+    private KeyController c1, c2;
 
     public GameContainer(World world) {
         this.world = world;
@@ -19,13 +20,12 @@ public class GameContainer implements Runnable {
     }
 
     public void start() {
-        window = new Window(this);
+        window = new Window(width, height, scale);
         renderer = new Renderer(window, world);
         input = new Input(this);
+        c1 = new KeyController(window, world.getKidnapper());
+        c2 = new KeyController(window, world.getFather());
         thread.run();
-    }
-
-    public void stop() {
     }
 
     public void run() {
@@ -57,9 +57,8 @@ public class GameContainer implements Runnable {
                 unprocessedTime -= UPDATE_CAP;
                 render = true;
 
-                input.update();
-
-                world.update(this, (float) UPDATE_CAP);
+                c1.update((float) UPDATE_CAP);
+                c2.update((float) UPDATE_CAP);
 
                 if (frameTime >= 1.0) {
                     frameTime = 0;
@@ -70,7 +69,8 @@ public class GameContainer implements Runnable {
 
             if (render) {
                 renderer.clear();
-                world.render(this, renderer);
+                //world.render(this, renderer);
+                renderer.render();
                 renderer.drawText("FPS: " + fps, 0, 0, 0xff00ffff);
                 window.update();
                 frames++;
@@ -82,12 +82,7 @@ public class GameContainer implements Runnable {
                 }
             }
         }
-
-
-        dispose();
     }
-
-    private void dispose() {}
 
     public int getWidth() {
         return width;
@@ -103,10 +98,6 @@ public class GameContainer implements Runnable {
 
     public Window getWindow() {
         return window;
-    }
-
-    public Input getInput() {
-        return input;
     }
 
     public Renderer getRenderer() {

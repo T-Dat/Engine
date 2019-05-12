@@ -1,24 +1,17 @@
-import java.util.ArrayList;
-
-public class World  {
+public class World {
     public static final int TS = 16;
     protected int tileW, tileH;
-    private ArrayList<GameObject> objects = new ArrayList<>(2);
     private boolean[] collisions;
+    private Player father;
+    private Player kidnapper;
 
 
     public World(int tileW, int tileH) {
         this.tileW = tileW;
         this.tileH = tileH;
-        collisions = new boolean[tileW *tileH];
-        objects.add(new Player(3,2, true, true, this));
-        objects.add(new Player(8,6, false, false, this));
-    }
-
-    public void update(GameContainer gc, float dt) {
-        for (GameObject object : objects) {
-            object.update(gc, dt);
-        }
+        collisions = new boolean[tileW * tileH];
+        kidnapper = new Player(3, 2, true, this);
+        father = new Player(8, 6, false, this);
     }
 
     //TODO: move that to renderer
@@ -33,11 +26,8 @@ public class World  {
             }
 
         }
-        for (GameObject obj: objects) {
-            obj.render(r);
-        }
         if (getPlayerCollision()) {
-            gc.getRenderer().drawText("Finished!!!", gc.getWidth()/2, gc.getHeight()/2, 0xff0000ff);
+            gc.getRenderer().drawText("Finished!!!", gc.getWidth() / 2, gc.getHeight() / 2, 0xff0000ff);
         }
     }
 
@@ -49,7 +39,7 @@ public class World  {
     }
 
     public boolean getPlayerCollision() {
-        return Math.abs(objects.get(0).posX - objects.get(1).posX) < 10 && Math.abs(objects.get(0).posY - objects.get(1).posY) < 10;
+        return Math.abs(father.posX - kidnapper.posX) < 10 && Math.abs(father.posY - kidnapper.posY) < 10;
     }
 
     public void createLevel() {
@@ -67,8 +57,8 @@ public class World  {
             collisions[280 + i] = true;
         }
         for (int i = 0; i < tileH; i++) {
-            collisions[i* tileW + 19] = true;
-            collisions[i* tileW] = true;
+            collisions[i * tileW + 19] = true;
+            collisions[i * tileW] = true;
         }
 
     }
@@ -79,5 +69,17 @@ public class World  {
 
     public int getTileH() {
         return tileH;
+    }
+
+    public Player getFather() {
+        return father;
+    }
+
+    public Player getKidnapper() {
+        return kidnapper;
+    }
+
+    public boolean[] getCollisions() {
+        return collisions;
     }
 }

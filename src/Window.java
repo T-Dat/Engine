@@ -1,8 +1,5 @@
-import javax.swing.JFrame;
-import java.awt.BorderLayout;
-import java.awt.Canvas;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
@@ -17,13 +14,13 @@ public class Window {
     private BufferStrategy bs;
     private Graphics g;
 
-    public Window(GameContainer gc) {
-        pW = gc.getWidth();
-        pH = gc.getHeight();
-        image = new BufferedImage(gc.getWidth(), gc.getHeight(), BufferedImage.TYPE_INT_RGB);
-        p = ((DataBufferInt) getImage().getRaster().getDataBuffer()).getData();
+    public Window(int width, int height, float scale) {
+        pW = width;
+        pH = height;
+        image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        p = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
         canvas = new Canvas();
-        Dimension s = new Dimension((int)(gc.getWidth() * gc.getScale()), (int)(gc.getHeight() * gc.getScale()));
+        Dimension s = new Dimension((int) (width * scale), (int) (height * scale));
         canvas.setPreferredSize(s);
         canvas.setMaximumSize(s);
         canvas.setMinimumSize(s);
@@ -42,7 +39,7 @@ public class Window {
     }
 
     public void update() {
-        g.drawImage(image,0, 0, canvas.getWidth(), canvas.getHeight(), null);
+        g.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
         bs.show();
     }
 
@@ -53,19 +50,15 @@ public class Window {
         p[x + y * pW] = value;
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
     public int getpW() {
         return pW;
     }
 
     public int getpH() {
         return pH;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 }

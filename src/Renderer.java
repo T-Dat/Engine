@@ -2,10 +2,10 @@ import gfx.Image;
 import gfx.ImageTile;
 
 public class Renderer {
-    private int pW, pH;
-    private Font font = Font.STANDARD;
     Window window;
     World world;
+    private int pW, pH;
+    private Font font = Font.STANDARD;
 
     public Renderer(Window window, World world) {
         pW = window.getpW();
@@ -14,7 +14,17 @@ public class Renderer {
         this.world = world;
     }
 
-    public void  clear() {
+    public void render() {
+        renderPlayer(world.getFather());
+        renderPlayer(world.getKidnapper());
+    }
+
+    public void renderPlayer(Player player) {
+        int color = player.isKidnapper() ? 0xffff0000 : 0xff00ff00;
+        fillRect((int) player.getPosX(), (int) player.getPosY(), player.getWidth() - 1, player.getHeight() - 1, color);
+    }
+
+    public void clear() {
         for (int x = 0; x < pW; x++) {
             for (int y = 0; y < pH; y++) {
                 window.setPixel(x, y, 0xffffffff);
@@ -31,7 +41,7 @@ public class Renderer {
             for (int y = 0; y < font.getFontImage().getH(); y++) {
                 for (int x = 0; x < font.getWidths()[unicode]; x++) {
                     if (font.getFontImage().getP()[x + font.getOffsets()[unicode] + y * font.getFontImage().getW()] == 0xffffffff) {
-                        window.setPixel(x + offX + offset, y+ offY, color);
+                        window.setPixel(x + offX + offset, y + offY, color);
                     }
                 }
             }
@@ -53,8 +63,8 @@ public class Renderer {
 
         if (offX < 0) newX -= offX;
         if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW -offX;
-        if (newHeight + offY >= pH) newHeight = pH -offY;
+        if (newWidth + offX >= pW) newWidth = pW - offX;
+        if (newHeight + offY >= pH) newHeight = pH - offY;
 
 
         for (int y = newY; y < newHeight; y++) {
@@ -77,8 +87,8 @@ public class Renderer {
 
         if (offX < 0) newX -= offX;
         if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW -offX;
-        if (newHeight + offY >= pH) newHeight = pH -offY;
+        if (newWidth + offX >= pW) newWidth = pW - offX;
+        if (newHeight + offY >= pH) newHeight = pH - offY;
 
 
         for (int y = newY; y < newHeight; y++) {
@@ -113,8 +123,8 @@ public class Renderer {
 
         if (offX < 0) newX -= offX;
         if (offY < 0) newY -= offY;
-        if (newWidth + offX >= pW) newWidth = pW -offX;
-        if (newHeight + offY >= pH) newHeight = pH -offY;
+        if (newWidth + offX >= pW) newWidth = pW - offX;
+        if (newHeight + offY >= pH) newHeight = pH - offY;
 
         for (int y = newY; y <= newHeight; y++) {
             for (int x = newX; x <= newWidth; x++) {

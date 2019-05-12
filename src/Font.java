@@ -2,10 +2,10 @@ import gfx.Image;
 
 public class Font {
 
+    public static final Font STANDARD = new Font("/standard.png");
     private Image fontImage;
     private int[] offsets;
     private int[] widths;
-    public static final Font STANDARD = new Font("/standard.png");
 
     public Font(String path) {
         fontImage = new Image(path);

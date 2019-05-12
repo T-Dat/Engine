@@ -13,10 +13,11 @@ public class KeyController implements KeyListener {
         this.player = player;
     }
 
-    public void update() {
+    public void update(float dt) {
         for (int i = 0; i < NUM_KEYS; i++) {
             keysLast[i] = keys[i];
         }
+        movePlayer(dt);
     }
 
     public boolean isKey(int keyCode) {
@@ -32,7 +33,8 @@ public class KeyController implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void keyPressed(KeyEvent e) {

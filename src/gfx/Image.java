@@ -17,7 +17,7 @@ public class Image {
         }
         w = image.getWidth();
         h = image.getHeight();
-        p = image.getRGB(0,0,w,h,null,0,w);
+        p = image.getRGB(0, 0, w, h, null, 0, w);
         image.flush();
     }
 
@@ -25,20 +25,20 @@ public class Image {
         return w;
     }
 
-    public int getH() {
-        return h;
-    }
-
-    public int[] getP() {
-        return p;
-    }
-
     public void setW(int w) {
         this.w = w;
     }
 
+    public int getH() {
+        return h;
+    }
+
     public void setH(int h) {
         this.h = h;
+    }
+
+    public int[] getP() {
+        return p;
     }
 
     public void setP(int[] p) {
