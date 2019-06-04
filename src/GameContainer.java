@@ -13,11 +13,13 @@ public class GameContainer implements Runnable {
     private Renderer renderer;
     private World world;
     private KeyController c1, c2;
+    SoundClip clip;
 
     public GameContainer(World world) {
         this.world = world;
         width = World.TS * (world.getTileW());
         height = World.TS * (world.getTileH());
+        clip = new SoundClip("/coin.wav");
     }
 
     public void start() {
@@ -65,6 +67,7 @@ public class GameContainer implements Runnable {
                     frameTime = 0;
                     fps = frames;
                     frames = 0;
+                    clip.play();
                 }
             }
 
@@ -73,6 +76,7 @@ public class GameContainer implements Runnable {
                 renderer.render();
                 renderer.drawText("FPS: " + fps, 0, 0, 0xff00ffff);
                 window.update();
+
                 frames++;
             } else {
                 try {
